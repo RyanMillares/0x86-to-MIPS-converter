@@ -1,9 +1,13 @@
 
 from typing import Match
 
-
+# Hex Validation
 validChars = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"]
 binVals = ["0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111", "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111"]
+
+#Registers
+registers = ["0","at","v0","v1","a0","a1","a2","a3","t0","t1","t2","t3","t4","t5","t6","t7","s0","s1","s2","s3","s4","s5","s6","s7","t8","t9","k0","k1","gp","sp","fp","ra"]
+
 # R-type instructions
 rType00 = ["sll", "", "srl", "sra", "sllv", "", "srlv", "srav", "jr", "jalr", "", "", "syscall", "break"] #length 13
 rType01 = ["mfhi", "mthi", "mflo", "mtlo", "", "", "", "", "mult", "multu", "div", "divu"] # length 11
@@ -11,24 +15,39 @@ rType10 = ["add", "addu", "sub", "subu", "and", "or", "xor", "nor", "", "", "slt
 # I-type  instructions
 
 
-#print (binVals[validChars.index("D")])
+# Converts hex character to 4-bit binary
 def h2b(hexVal):
     #assuming input is one character
     return binVals[validChars.index(hexVal)]
 
+# Converts binary value to decimal value
+def b2d(binVal):
+    numBits = len(binVal)
+    value = ""
+    for i in range(numBits + 1):
+        #returned = int(binVal[(numBits - i):(numBits - i + 1)])
+        value += binVal[(numBits - i):(numBits - i + 1)] #* pow(2,i)
+        #test = int(str(value))
+    print("test")
+    return value
+print(b2d("1010"))
+myTest = ["1", "2", "3"]
+print(str(myTest[0:1]))
 
 def validInput(input):
     res = isinstance(input, str)
     if res:
-        #print("main code")
+      
         if len(input) == 10 and input[0:2] == "0x":
-            #print("main block")
+           
             hexOut = input[2:10]
-            for i in range(len(hexOut) - 1):
+            for i in range(len(hexOut)):
                 currChar = hexOut[i:(i+1)]
-                if currChar in validChars:
-                    print("\n")
+                if currChar in validChars: #change this to "not in" when done and replace code with else error raise
+                    #Debug line
+                    print(str(currChar) + " was found at index " + str(validChars.index(currChar)))
                 else:
+                    
                     raise NameError
 
 
@@ -56,9 +75,15 @@ def getType(chars):
 
 
     
+
 def parseInput(hex):
-    instType = getType(hex[0:2])
+    instrType = getType(hex[0:2])
+
+    convBinary = ""
+    for i in range(len(hex)):
+        convBinary += h2b(hex[i:(i+1)])
     #print("test")
+    print(convBinary)
 
 
 def main():
