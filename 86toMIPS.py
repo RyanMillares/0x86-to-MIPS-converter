@@ -63,6 +63,10 @@ def parseInput(hex):
 
 def main():
     while(True):
+        # Note, when refactoring for line-by-line, remove while loop and
+        # set up a default hexData value for errors.
+        # Convert main to function that accepts one line input
+        # Make new main that passes each line to function and append output to file
         print("Hello, welcome to 0x86 to MIPS Converter!")
         print("Please input a valid 0x86 assembly instruction in Hex (Include the \"0x\" at the start):")
         userInput = input() 
