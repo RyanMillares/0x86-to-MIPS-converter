@@ -14,7 +14,6 @@ rType01 = ["mfhi", "mthi", "mflo", "mtlo", "", "", "", "", "mult", "multu", "div
 rType10 = ["add", "addu", "sub", "subu", "and", "or", "xor", "nor", "", "", "slt", "sltu"] # length 11
 # I-type  instructions
 
-
 # Converts hex character to 4-bit binary
 def h2b(hexVal):
     #assuming input is one character
@@ -23,17 +22,16 @@ def h2b(hexVal):
 # Converts binary value to decimal value
 def b2d(binVal):
     numBits = len(binVal)
-    value = ""
-    for i in range(numBits + 1):
+    value = 0
+    for i in range(numBits):
         #returned = int(binVal[(numBits - i):(numBits - i + 1)])
-        value += binVal[(numBits - i):(numBits - i + 1)] #* pow(2,i)
+        value += int(binVal[numBits - i - 1]) * pow(2,i)
         #test = int(str(value))
-    print("test")
-    return value
-print(b2d("1010"))
-myTest = ["1", "2", "3"]
-print(str(myTest[0:1]))
 
+    return value
+#print(b2d("1011"))
+
+# validates if input is in correct 32-bit assembly instruction format
 def validInput(input):
     res = isinstance(input, str)
     if res:
@@ -46,22 +44,18 @@ def validInput(input):
                 if currChar in validChars: #change this to "not in" when done and replace code with else error raise
                     #Debug line
                     print(str(currChar) + " was found at index " + str(validChars.index(currChar)))
-                else:
-                    
+                else:             
                     raise NameError
-
-
             return hexOut
             
         else: # string input is not of correct length or incorrectly formatted
             raise ValueError
-
-
     else: # input is not of type string
         raise TypeError
 
+# returns instruction type
+# 0 = r-type, 1 = j-type, 2 = i-type
 def getType(chars):
-    #0 = r-type, 1 = j-type, 2 = i-type
     opCode = (h2b(chars[0:1]) + h2b(chars[1:2]))[0:6]
     if opCode == "000000":
         print("R-Type")
@@ -74,7 +68,23 @@ def getType(chars):
         return 2
 
 
+def parseRType(binValue):
+    print("r")
+    opcode = binVals[0:6]
+    rs = binVals[6:11]
+    rt = binVals[11:16]
+    rd = binVals[16:21]
+    shamt = binVals[21:26]
+    func = binVals[26:32]
+
     
+
+def parseIType(binValue):
+    print("i")
+
+def parseJType(binValue):
+    print("j")
+
 
 def parseInput(hex):
     instrType = getType(hex[0:2])
@@ -82,8 +92,16 @@ def parseInput(hex):
     convBinary = ""
     for i in range(len(hex)):
         convBinary += h2b(hex[i:(i+1)])
-    #print("test")
-    print(convBinary)
+
+
+    
+    if instrType == 0: print("r")
+    elif instrType == 1: print("j")
+    else: print("i")
+
+    #match instrType: use this once all issues with 3.10 are resolved
+     #   case 0: print("r")
+      #  case 1: print("j")
 
 
 def main():
