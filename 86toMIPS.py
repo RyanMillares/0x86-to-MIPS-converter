@@ -1,4 +1,7 @@
 
+from typing import Match
+
+
 validChars = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"]
 binVals = ["0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111", "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111"]
 # R-type instructions
@@ -10,7 +13,9 @@ rType10 = ["add", "addu", "sub", "subu", "and", "or", "xor", "nor", "", "", "slt
 
 #print (binVals[validChars.index("D")])
 def h2b(hexVal):
-    print("est")
+    #assuming input is one character
+    return binVals[validChars.index(hexVal)]
+
 
 def validInput(input):
     res = isinstance(input, str)
@@ -37,11 +42,22 @@ def validInput(input):
         raise TypeError
 
 def getType(chars):
-    #0 = r-type, 1 = i-type, 2 = j-type
-    print(binVals[validChars.index(chars[0:1])] + binVals[validChars.index(chars[1:2])])
+    #0 = r-type, 1 = j-type, 2 = i-type
+    opCode = (h2b(chars[0:1]) + h2b(chars[1:2]))[0:6]
+    if opCode == "000000":
+        print("R-Type")
+        return 0
+    elif (opCode == "000010" or opCode == "000011"):
+        print("j-type")
+        return 1
+    else:
+        print("i-type")
+        return 2
+
+
     
 def parseInput(hex):
-    getType(hex[0:2])
+    instType = getType(hex[0:2])
     #print("test")
 
 
