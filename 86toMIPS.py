@@ -67,23 +67,38 @@ def getType(chars):
         print("i-type")
         return 2
 
+def getRegister(binVal):
+    val = int(b2d(binVal))
+    return "$" + str(registers[val])
+    
+print(getRegister("10101"))
+#print(registers[int(b2d("01001"))])
 
 def parseRType(binValue):
     print("r")
-    opcode = binVals[0:6]
+    output = []
+    opcode = binVals[0:6] #not used in r-type, comment out when finalizing
     rs = binVals[6:11]
     rt = binVals[11:16]
     rd = binVals[16:21]
     shamt = binVals[21:26]
     func = binVals[26:32]
-
     
+
 
 def parseIType(binValue):
     print("i")
+    output = []
+    opcode = binVals[0:6]
+    rs = binVals[6:11]
+    rt = binVals[11:16]
+    imm = binVals[16:32]
 
 def parseJType(binValue):
     print("j")
+    output = []
+    opcode = binVals[0:6]
+    label = binVals[6:32]
 
 
 def parseInput(hex):
