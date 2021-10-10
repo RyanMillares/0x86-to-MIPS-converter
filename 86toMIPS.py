@@ -12,12 +12,22 @@ registers = ["0","at","v0","v1","a0","a1","a2","a3","t0","t1","t2","t3","t4","t5
 rType00 = ["sll", "", "srl", "sra", "sllv", "", "srlv", "srav", "jr", "jalr", "", "", "syscall", "break"] #length 13
 rType01 = ["mfhi", "mthi", "mflo", "mtlo", "", "", "", "", "mult", "multu", "div", "divu"] # length 11
 rType10 = ["add", "addu", "sub", "subu", "and", "or", "xor", "nor", "", "", "slt", "sltu"] # length 11
-# I-type  instructions
 
+# I-type  instructions
+iType00 = []
+iType10 = []
+iType11 = []
+
+# J-type instructions
+jType = ["j", "jal"]
 # Converts hex character to 4-bit binary
 def h2b(hexVal):
     #assuming input is one character
     return binVals[validChars.index(hexVal)]
+
+def b2h(binVal):
+    decValue = b2d(binVal)
+    return validChars[decValue]
 
 # Converts binary value to decimal value
 def b2d(binVal):
@@ -137,6 +147,9 @@ def parseRType(binValue):
 
     elif func3 == "0110":
         print("rs, rt")
+        output.append(getRegister(b2d(rsBin)))
+        output.append(getRegister(b2d(rtBin)))
+
     elif (func3 == "1000" or func3 == "1001") or func3 == "1010":
         print("rd, rs, rt")
         output.append(getRegister(b2d(rdBin)))
@@ -147,9 +160,8 @@ def parseRType(binValue):
     else:
         print("error")
 
+    return output
     
-
-
 
 def parseIType(binValue):
     print("i")
@@ -157,13 +169,31 @@ def parseIType(binValue):
     opcode = binVals[0:6]
     rs = binVals[6:11]
     rt = binVals[11:16]
-    imm = binVals[16:32]
+    immBin = binVals[16:32]
+    output.append("i-type")
+    output.append("hello-world")
+
+    return output
 
 def parseJType(binValue):
     print("j")
     output = []
     opcode = binVals[0:6]
-    label = binVals[6:32]
+    labelBin = binVals[6:32]
+    
+    opname = jType[int(opcode[5:6])]
+    output.append(opname)
+
+    labelBin = "00" + labelBin
+    label = "0x"
+    numHex = len(label) / 4
+    for i in range(numHex):
+        label += b2h(labelBin[(4*i):(4*(i+1))])
+        
+    output.append(label)
+    return output
+
+
 
 
 def parseInput(hex):
@@ -176,11 +206,21 @@ def parseInput(hex):
 
     # split binary based on type 
     if instrType == 0: 
-        print("r")
+        output = parseRType(convBinary)
     elif instrType == 1: 
         print("j")
+        output = parseJType(convBinary)
     else: 
         print("i")
+        output = parseIType(convBinary)
+
+    mips = ""
+    for i in range(len(output)):
+        if i == 0 or i == (len(output) - 1): # first or last object
+            mips.append(output[i])
+        else: # objects in middle
+            mips.append(output[i] + ", ")
+    return mips
 
     #match instrType: use this once all issues with 3.10 are resolved
      #   case 0: print("r")
@@ -218,7 +258,7 @@ def main():
         finally:
             print("\n")
     print(hexData)
-    parseInput(hexData)
+    print(parseInput(hexData))
 
 
 
