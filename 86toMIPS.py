@@ -8,7 +8,7 @@ binVals = ["0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111", "1000
 #Registers
 registers = ["0","at","v0","v1","a0","a1","a2","a3","t0","t1","t2","t3","t4","t5","t6","t7","s0","s1","s2","s3","s4","s5","s6","s7","t8","t9","k0","k1","gp","sp","fp","ra"]
 
-# R-type instructions
+# R-type instructions 
 rType00 = ["sll", "", "srl", "sra", "sllv", "", "srlv", "srav", "jr", "jalr", "", "", "syscall", "break"] #length 13
 rType01 = ["mfhi", "mthi", "mflo", "mtlo", "", "", "", "", "mult", "multu", "div", "divu"] # length 11
 rType10 = ["add", "addu", "sub", "subu", "and", "or", "xor", "nor", "", "", "slt", "sltu"] # length 11
@@ -78,12 +78,77 @@ def parseRType(binValue):
     print("r")
     output = []
     opcode = binVals[0:6] #not used in r-type, comment out when finalizing
-    rs = binVals[6:11]
-    rt = binVals[11:16]
-    rd = binVals[16:21]
-    shamt = binVals[21:26]
-    func = binVals[26:32]
+    rsBin = binVals[6:11]
+    rtBin = binVals[11:16]
+    rdBin = binVals[16:21]
+    saBin = binVals[21:26]
+    funcBin = binVals[26:32]
+
+    # Fetch operation name
+    typeId = funcBin[0:2]
+    if typeId == "00":
+        opname = rType00[b2d(funcBin[2:6])]
+    elif typeId== "01":
+        opname = rType01[b2d(funcBin[2:6])]
+    elif typeId == "10":
+        opname = rType10[b2d(funcBin[2:6])]
+    else:
+        opname = "Error: Invalid function bits"
+    output.append(opname)
+
+    # Fetch order of fields and error handle
+    func3 = funcBin[0:4]
+    if func3 == "0000":
+        print("rd, rt, sa")
+        output.append(getRegister(b2d(rdBin)))
+        output.append(getRegister(b2d(rtBin)))
+        output.append(getRegister(b2d(saBin)))
+
+    elif func3 == "0001":
+        # print("rd, rt, rs")
+        output.append(getRegister(b2d(rdBin)))
+        output.append(getRegister(b2d(rtBin)))
+        output.append(getRegister(b2d(rsBin)))
+
+    elif func3 == "0010":
+        print("rs or rd, rs")
+        if funcBin[5:6] == "0":
+            # jr
+            output.append(getRegister(b2d(rsBin)))
+        elif funcBin[5:6] == "1":
+            # jalr
+            output.append(getRegister(b2d(rdBin)))
+            output.append(getRegister(b2d(rsBin)))
+        else:
+            print("Error, incorrect binary")
+
+    elif func3 == "0011":
+        print("no fields, syscall and break")
+    elif func3 == "0100":
+        print("rd, rs alternate one")
+        
+        oddOrEven = b2d(funcBin[4:6])
+        if oddOrEven % 2 == 0:
+            # print("00 or 10")
+            output.append(getRegister(b2d(rdBin)))
+        elif oddOrEven % 2 == 1:
+            # print("01 or 11")
+            output.append(getRegister(b2d(rsBin)))
+
+    elif func3 == "0110":
+        print("rs, rt")
+    elif (func3 == "1000" or func3 == "1001") or func3 == "1010":
+        print("rd, rs, rt")
+        output.append(getRegister(b2d(rdBin)))
+        output.append(getRegister(b2d(rsBin)))
+        output.append(getRegister(b2d(rtBin)))
+
+
+    else:
+        print("error")
+
     
+
 
 
 def parseIType(binValue):
@@ -109,14 +174,26 @@ def parseInput(hex):
         convBinary += h2b(hex[i:(i+1)])
 
 
-    
-    if instrType == 0: print("r")
-    elif instrType == 1: print("j")
-    else: print("i")
+    # split binary based on type 
+    if instrType == 0: 
+        print("r")
+    elif instrType == 1: 
+        print("j")
+    else: 
+        print("i")
 
     #match instrType: use this once all issues with 3.10 are resolved
      #   case 0: print("r")
       #  case 1: print("j")
+
+
+def ash(ccday, w, mNum):
+    return ((((mNum- 1)*124+ (ccday + w)) - 1) % 9) + 1
+#print(ash(14, 32, 2))
+
+def ems(day,month):
+    return ((month - 1)*124 + day)
+#print(ems(46,2))
 
 
 def main():
