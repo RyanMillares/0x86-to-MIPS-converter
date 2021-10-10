@@ -191,8 +191,9 @@ def parseJType(binValue):
 
     labelBin = "00" + labelBin
     label = "0x"
-    numHex = len(label) / 4
-    for i in range(numHex):
+    #print(len(label))
+    numHex = len(labelBin) / 4
+    for i in range(int(numHex)):
         label += b2h(labelBin[(4*i):(4*(i+1))])
         
     output.append(label)
