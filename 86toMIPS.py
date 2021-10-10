@@ -31,6 +31,7 @@ def b2h(binVal):
 
 # Converts binary value to decimal value
 def b2d(binVal):
+    print(binVal)
     numBits = len(binVal)
     value = 0
     for i in range(numBits):
@@ -78,24 +79,26 @@ def getType(chars):
         return 2
 
 def getRegister(binVal):
-    val = int(b2d(binVal))
-    return "$" + str(registers[val])
+    print(binVal)
+    #val = int(b2d(binVal))
+    return "$" + str(registers[binVal])
     
-print(getRegister("10101"))
+#print(getRegister("10101"))
 #print(registers[int(b2d("01001"))])
 
 def parseRType(binValue):
     print("r")
     output = []
-    opcode = binVals[0:6] #not used in r-type, comment out when finalizing
-    rsBin = binVals[6:11]
-    rtBin = binVals[11:16]
-    rdBin = binVals[16:21]
-    saBin = binVals[21:26]
-    funcBin = binVals[26:32]
+    opcode = binValue[0:6] #not used in r-type, comment out when finalizing
+    rsBin = binValue[6:11]
+    rtBin = binValue[11:16]
+    rdBin = binValue[16:21]
+    saBin = binValue[21:26]
+    funcBin = binValue[26:32]
+    print(funcBin)
 
     # Fetch operation name
-    typeId = funcBin[0:2]
+    typeId = str(funcBin[0:2])
     if typeId == "00":
         opname = rType00[b2d(funcBin[2:6])]
     elif typeId== "01":
@@ -103,6 +106,7 @@ def parseRType(binValue):
     elif typeId == "10":
         opname = rType10[b2d(funcBin[2:6])]
     else:
+        print(typeId)
         opname = "Error: Invalid function bits"
     output.append(opname)
 
@@ -152,6 +156,7 @@ def parseRType(binValue):
 
     elif (func3 == "1000" or func3 == "1001") or func3 == "1010":
         print("rd, rs, rt")
+        print(rdBin)
         output.append(getRegister(b2d(rdBin)))
         output.append(getRegister(b2d(rsBin)))
         output.append(getRegister(b2d(rtBin)))
@@ -167,8 +172,8 @@ def parseIType(binValue):
     print("i")
     output = []
     opcode = binVals[0:6]
-    rs = binVals[6:11]
-    rt = binVals[11:16]
+    rs = binValue[6:11]
+    rt = binValue[11:16]
     immBin = binVals[16:32]
     output.append("i-type")
     output.append("hello-world")
@@ -178,8 +183,8 @@ def parseIType(binValue):
 def parseJType(binValue):
     print("j")
     output = []
-    opcode = binVals[0:6]
-    labelBin = binVals[6:32]
+    opcode = binValue[0:6]
+    labelBin = binValue[6:32]
     
     opname = jType[int(opcode[5:6])]
     output.append(opname)
@@ -217,9 +222,9 @@ def parseInput(hex):
     mips = ""
     for i in range(len(output)):
         if i == 0 or i == (len(output) - 1): # first or last object
-            mips.append(output[i])
+            mips += output[i] + " "
         else: # objects in middle
-            mips.append(output[i] + ", ")
+            mips += output[i] + ", "
     return mips
 
     #match instrType: use this once all issues with 3.10 are resolved
