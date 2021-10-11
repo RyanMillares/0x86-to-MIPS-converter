@@ -15,9 +15,9 @@ rType01 = ["mfhi", "mthi", "mflo", "mtlo", "", "", "", "", "mult", "multu", "div
 rType10 = ["add", "addu", "sub", "subu", "and", "or", "xor", "nor", "", "", "slt", "sltu"] # length 11
 
 # I-type  instructions
-iType00 = []
-iType10 = []
-iType11 = []
+iType00 = ["bltz","bgez","","","beq","bne","blez","bgtz","addi","addiu","slti","sltiu","andi","ori","xori","lui"] # length 16
+iType10 = ["lb","lh","","lw","lbu","lhu","","","sb","sh","","sw"] # length 12
+iType11 = ["lwc1","swc1"] # length 2
 
 # J-type instructions
 jType = ["j", "jal"]
@@ -41,7 +41,6 @@ def b2d(binVal):
         #test = int(str(value))
 
     return value
-#print(b2d("1011"))
 
 # validates if input is in correct 32-bit assembly instruction format
 def validInput(input):
@@ -164,6 +163,35 @@ def parseIType(binValue):
     rs = binValue[6:11]
     rt = binValue[11:16]
     immBin = binVals[16:32]
+    typeId = str(opcode[0:2])
+    funcBin = opcode[2:6]
+    if typeId == "00":
+        if opcode == "000001":
+            if rt == "000000":
+                if b2d(rt) <= 1:
+                    opname = iType00[b2d(rt)]
+                else:
+                    opname = "Error: BLTZ/BGEZ requires rt of 000000 or 000001"
+            else:
+                if(str(funcBin[3:5]) == "11"):
+                    if rt == "000000":
+                        opname = iType00[b2d(funcBin)]
+                    else:
+                        opname = "Error: BLEZ/BGTZ requires rt of 000000"
+                else:
+                    opname = iType00[b2d(funcBin)]
+        print("00")
+    elif typeId == "10":
+        print("10")
+        opname = iType10[b2d(funcBin)]
+    elif typeId == "11":
+        print("11")
+        opname = iType11[b2d(funcBin)]
+    else: 
+        opname = "Error Invalid Binary Opcode"
+
+    output.append(opname)
+    
     output.append("i-type")
     output.append("hello-world")
     return output
