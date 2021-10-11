@@ -21,18 +21,23 @@ iType11 = ["lwc1","swc1"] # length 2
 
 # J-type instructions
 jType = ["j", "jal"]
+
 # Converts hex character to 4-bit binary
 def h2b(hexVal):
     #assuming input is one character
     return binVals[validChars.index(hexVal)]
 
 def b2h(binVal):
-    decValue = b2d(binVal)
-    return validChars[decValue]
+    # consider switching to take the entire binary
+    hex = "0x"
+    numHex = len(binVal) / 4
+    for i in range(int(numHex)):
+        hex += validChars[b2d(binVal[(4*i):(4*(i+1))])]
+    return hex
+
 
 # Converts binary value to decimal value
 def b2d(binVal):
-    print(binVal)
     numBits = len(binVal)
     value = 0
     for i in range(numBits):
@@ -102,8 +107,7 @@ def parseRType(binValue):
         opname = rType10[b2d(funcBin[2:6])]
 
     else:
-        print(typeId)
-        opname = "Error: Invalid function bits"
+        opname = "Error: Invalid 2 most significant bits"
 
     output.append(opname)
 
@@ -119,8 +123,7 @@ def parseRType(binValue):
         output.append(getRegister(rtBin))
         output.append(getRegister(rsBin))
 
-    elif func3 == "0010":
-        print("rs or rd, rs")
+    elif func3 == "0010": # rs or rd, rs
         if funcBin[5:6] == "0": # jr
             output.append(getRegister(rsBin))
 
@@ -152,48 +155,74 @@ def parseRType(binValue):
         output.append(getRegister(rtBin))
 
     else:
-        print("error")
+        output.append("Error: Invalid Function Bits")
 
     return output
     
 # parses fields for i-type instructions    
 def parseIType(binValue):
     output = []
-    opcode = binVals[0:6]
-    rs = binValue[6:11]
-    rt = binValue[11:16]
-    immBin = binVals[16:32]
+    opcode = binValue[0:6]
+    rsBin = binValue[6:11]
+    rtBin = binValue[11:16]
+    immBin = binValue[16:32]
     typeId = str(opcode[0:2])
     funcBin = opcode[2:6]
     if typeId == "00":
-        if opcode == "000001":
-            if rt == "000000":
-                if b2d(rt) <= 1:
-                    opname = iType00[b2d(rt)]
-                else:
-                    opname = "Error: BLTZ/BGEZ requires rt of 000000 or 000001"
+        num = b2d(opcode)
+        if num == 1:
+            if b2d(rtBin) <= 1:
+                opname = iType00[b2d(rtBin)]
+
             else:
-                if(str(funcBin[3:5]) == "11"):
-                    if rt == "000000":
-                        opname = iType00[b2d(funcBin)]
-                    else:
-                        opname = "Error: BLEZ/BGTZ requires rt of 000000"
-                else:
+                opname = "Error, BLTZ/BGEZ require rt of 000000 or 000001"
+
+        else:
+            if b2d(opcode) > 5:
+                if rtBin == "000000":
                     opname = iType00[b2d(funcBin)]
-        print("00")
+
+                else: 
+                    opname = "Error, BLEZ/BGTZ require rt of 000000"
+
+            elif b2d(opcode) > 3:
+                opname = iType00[b2d(funcBin)]
+
+            else:
+                opname = "Error: Invalid i-type opcode"
+
     elif typeId == "10":
-        print("10")
         opname = iType10[b2d(funcBin)]
+
     elif typeId == "11":
-        print("11")
         opname = iType11[b2d(funcBin)]
+
     else: 
         opname = "Error Invalid Binary Opcode"
 
     output.append(opname)
-    
-    output.append("i-type")
-    output.append("hello-world")
+    func3 = opcode[2:6]
+    firstBit = str(opcode[0:1])
+    funcDec = b2d(func3)
+    if firstBit == "0":
+        if funcDec > 5 or funcDec < 2: # rs, label
+            output.append(getRegister(rsBin))
+            output.append(b2h(immBin))
+
+        else: # rs, rt, label
+            output.append(getRegister(rsBin))
+            output.append(getRegister(rtBin))
+            output.append(b2h(immBin))
+
+    elif firstBit == "1":
+        output.append(getRegister(rtBin))
+        label = b2h(immBin) + "(" + getRegister(rsBin) + ")"
+        output.append(label)
+
+    else:
+        # print("bruh")
+        output.append("bruh")
+
     return output
 
 # parses fields for j-type instructions
@@ -203,14 +232,8 @@ def parseJType(binValue):
     labelBin = binValue[6:32]
     opname = jType[int(opcode[5:6])]
     output.append(opname)
-
     labelBin = "00" + labelBin
-    label = "0x"
-    numHex = len(labelBin) / 4
-    for i in range(int(numHex)):
-        label += b2h(labelBin[(4*i):(4*(i+1))])
-        
-    output.append(label)
+    output.append(b2h(labelBin))
     return output
 
 # converts hex instruction to binary and parses based on instruction type
@@ -225,11 +248,11 @@ def parseInput(hex):
         output = parseRType(convBinary)
 
     elif instrType == 1: 
-        print("j")
+        #print("j")
         output = parseJType(convBinary)
 
     else: 
-        print("i")
+        #print("i")
         output = parseIType(convBinary)
 
     mips = ""
@@ -241,9 +264,8 @@ def parseInput(hex):
             mips += output[i] + ", "
 
     return mips
-    #match instrType: use this once all issues with 3.10 are resolved
-    #   case 0: print("r")
-    #  case 1: print("j")
+    # match instrType: use this once all issues with 3.10 are resolved
+
 
 def main():
     while(True):
