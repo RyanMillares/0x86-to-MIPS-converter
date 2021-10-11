@@ -1,0 +1,49 @@
+This is a list of python-to-javascript conversions for use in future
+in case unable to use a py-to-js converter to generate javascript file
+of MIPS converter.
+- Ryan Millares (10/11/21)
+
+-- Declaring Constants
+myConstant = "hello"
+const myConstant = "hello"
+
+-- Declaring Variables
+myTotal = 0
+var myTotal = 0
+
+-- Declaring constant arrays
+myArray = ["1", "2", "3"]
+const myArray = ["1", "2", "3"]
+
+-- Functions
+def funcName(arg1, arg2): 
+function funcName(arg1, arg2){ }
+
+-- Converting string to int
+num = int(text)
+num = parseInt(text, 10)
+
+-- Equality
+==
+== or ===
+
+-- Exponent 
+num = pow(5, 2)
+num = Math.pow(5, 2)
+
+-- Conditional
+if():  elif: else:
+if(){ }  else if(){ }  else{ }
+
+-- Switch
+Nope
+switch(val){ case pattern1: break; case pattern2: break; default: break; }
+
+-- Substrings
+substring = string[startIndex : endIndex + 1]
+substring = string.slice(startIndex, endIndex + 1)
+
+-- Pattern searching
+if pattern in string:
+if(string.indexOf(pattern) > -1){  }
+

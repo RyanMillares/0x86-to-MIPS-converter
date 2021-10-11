@@ -25,7 +25,7 @@ jType = ["j", "jal"]
 # Converts hex character to 4-bit binary
 def h2b(hexVal):
     #assuming input is one character
-    return binVals[validChars.index(hexVal)]
+    return binVals[validChars.index(hexVal.upper())]
 
 def b2h(binVal):
     # consider switching to take the entire binary
@@ -55,7 +55,7 @@ def validInput(input):
             hexOut = input[2:10]
             for i in range(len(hexOut)):
                 currChar = hexOut[i:(i+1)]
-                if currChar not in validChars: 
+                if currChar.upper() not in validChars: 
                     raise NameError
 
             return hexOut
@@ -179,11 +179,15 @@ def parseIType(binValue):
 
         else:
             if b2d(opcode) > 5:
-                if rtBin == "000000":
-                    opname = iType00[b2d(funcBin)]
+                if str(opcode[0:3]) == "000":
+                    if rtBin == "000000":
+                        opname = iType00[b2d(funcBin)]
 
-                else: 
-                    opname = "Error, BLEZ/BGTZ require rt of 000000"
+                    else: 
+                        opname = "Error, BLEZ/BGTZ require rt of 000000"
+
+                else:
+                    opname = iType00[b2d(funcBin)]
 
             elif b2d(opcode) > 3:
                 opname = iType00[b2d(funcBin)]
@@ -206,8 +210,13 @@ def parseIType(binValue):
     funcDec = b2d(func3)
     if firstBit == "0":
         if funcDec > 5 or funcDec < 2: # rs, label
-            output.append(getRegister(rsBin))
-            output.append(b2h(immBin))
+            if str(opcode[2:3]) == "0":
+                output.append(getRegister(rsBin))
+                output.append(b2h(immBin))
+            else: #rt, rs, label
+                output.append(getRegister(rtBin))
+                output.append(getRegister(rsBin))
+                output.append(b2h(immBin))
 
         else: # rs, rt, label
             output.append(getRegister(rsBin))
