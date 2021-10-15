@@ -275,7 +275,6 @@ def parseInput(hex):
     return mips
     # match instrType: use this once all issues with 3.10 are resolved
 
-
 def main():
     while(True):
         # Note, when refactoring for line-by-line, remove while loop and
@@ -303,7 +302,8 @@ def main():
         finally:
             print("\n")
 
-    print(parseInput(hexData))
+    mipsOutput = parseInput(hexData) # to be used in block output
+    print(mipsOutput)
 
 if __name__ == "__main__":
     main()

@@ -3,6 +3,7 @@ in case unable to use a py-to-js converter to generate javascript file
 of MIPS converter.
 - Ryan Millares (10/11/21)
 
+
 -- Declaring Constants
 myConstant = "hello"
 const myConstant = "hello"
@@ -47,3 +48,16 @@ substring = string.slice(startIndex, endIndex + 1)
 if pattern in string:
 if(string.indexOf(pattern) > -1){  }
 
+-- Uppercase
+string.upper()
+string.toUpperCase()
+
+-- Length of Array 
+len(array)
+array.length 
+
+-- Check if string
+if isinstance(value, str):
+if (typeof value === 'string' || value instanceof String){ }
+
+-- 
