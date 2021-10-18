@@ -71,15 +71,15 @@ def validInput(input):
 def getType(chars):
     opCode = (h2b(chars[0:1]) + h2b(chars[1:2]))[0:6]
     if opCode == "000000":
-        print("R-Type")
+        #print("R-Type")
         return 0
 
     elif (opCode == "000010" or opCode == "000011"):
-        print("j-type")
+        #print("j-type")
         return 1
 
     else:
-        print("i-type")
+        #print("i-type")
         return 2
 
 # returns register name given 5-bit binary value
@@ -276,34 +276,56 @@ def parseInput(hex):
     # match instrType: use this once all issues with 3.10 are resolved
 
 def main():
+    hexInputs = []
+    flag = True
+    print("Hello, welcome to 0x86 to MIPS Converter!")
+    print("Please input a valid 0x86 assembly instruction in Hex (Include the \"0x\" at the start):")
+    print("Please input hex instructions on separate lines. Enter \"exit\" when done.")
     while(True):
-        # Note, when refactoring for line-by-line, remove while loop and
-        # set up a default hexData value for errors.
-        # Convert main to function that accepts one line input
-        # Make new main that passes each line to function and append output to file
-        print("Hello, welcome to 0x86 to MIPS Converter!")
-        print("Please input a valid 0x86 assembly instruction in Hex (Include the \"0x\" at the start):")
-        userInput = input() 
-        try:
-            hexData = validInput(userInput)
-
-        except TypeError:
-            print("Input needs to be a string.")
-
-        except ValueError:
-            print("Input needs to be 10 characters, and start with \"0x\"")
-
-        except NameError:
-            print("Hex value can only contain valid hexadecimal characters.")
-
-        else:
+        if flag == False:
             break
+        while(True):
+            # Note, when refactoring for line-by-line, remove while loop and
+            # set up a default hexData value for errors.
+            # Convert main to function that accepts one line input
+            # Make new main that passes each line to function and append output to file
+            
+            userInput = input() 
+            if userInput.lower() == "exit":
+                flag = False
+                break
+            try:
+                hexData = validInput(userInput)
 
-        finally:
-            print("\n")
+            except TypeError:
+                print("Input needs to be a string.")
 
-    mipsOutput = parseInput(hexData) # to be used in block output
-    print(mipsOutput)
+            except ValueError:
+                print("Input needs to be 10 characters, and start with \"0x\"")
+
+            except NameError:
+                print("Hex value can only contain valid hexadecimal characters.")
+
+            else:
+                hexInputs.append(hexData)
+                break
+
+
+        
+    mipsOutputs = []
+    if len(hexInputs) > 0:
+        print("execute conversion")
+        for i in hexInputs:
+            mipsOutputs.append(parseInput(i))
+        for j in mipsOutputs:
+            print(j)
+    else:
+        print("You did not provide any inputs.")
+    # mipsOutput = parseInput(hexData) # to be used in block output
+
+    print("\nEnter any key input to close program.")
+    useless = input()
+    #print(mipsOutput)
 
 if __name__ == "__main__":
     main()
