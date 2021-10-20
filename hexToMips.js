@@ -24,7 +24,15 @@ function h2b(hexVal){
 
 }
 
-
+function manyH2B(hexVal) {
+    let letters = hexVal.length 
+    var output = ""
+    for(let i = 0; i < letters; i++){
+        let convert = h2b(hexVal.slice(i, i+1))
+        output.concat(convert)
+    }
+    return output
+}
 function b2h(binVal){
     //consider switching to take the entire binary
     var hex = "0x"
@@ -103,10 +111,102 @@ function getType(chars) {
             // i-type
             console.log("i-type")
             return 2
+            break;
 
 
     }
     
 
 }
-console.log(getType("AAAAAAAA"))
+//reterns register name given 5 bit binary
+function getRegister(binVal) {
+    const val = parseInt(b2d(binVal))
+    return ("$" + String(registers[val]))
+}
+
+function parseRType(binValue){
+    const output = []
+    const opcode = binValue.slice(0, 6) //not used in r-type, comment out when finalizing
+    const rsBin = binValue.slice(6,11)
+    const rtBin = binValue.slice(11,16)
+    const rdBin = binValue.slice(16,21)
+    const saBin = binValue.slice(21,26)
+    const funcBin = binValue.slice(26,32)
+    const typeId = String(funcBin.slice(0,2)) // Fetch operation name
+    var opname = ""
+    if(typeId === "00") {
+        opname = rType00[b2d(funcBin.slice(2,6))]
+    }
+    else if(typeId === "01") {
+        opname = rType01[b2d(funcBin.slice(2,6))]
+    }
+    else if(typeId === "10") {
+        opname = rType10[b2d(funcBin.slice(2,6))]
+    }
+    else {
+        opname =  "Error: Invalid 2 most significant bits"
+    }
+
+    output.push(opname)
+
+    // Fetch order of fields and error handle
+    func3 = funcBin.slice(0,4)
+
+    if (func3 === "0000") { // rd, rt, sa
+        output.push(getRegister(rdBin))
+        output.push(getRegister(rtBin))
+        output.push(getRegister(saBin))
+    }
+    else if (func3 === "0001") { // rd, rt, rs
+        output.push(getRegister(rdBin))
+        output.push(getRegister(rtBin))
+        output.push(getRegister(rsBin))
+    }
+    else if (func3 === "0010"){ // rs or rd, rs
+        if (funcBin.slice(5,6) === "0") { // jr
+            output.push(getRegister(rsBin))
+        }
+        else if (funcBin.slice(5,6) === "1") { // jalr
+            output.push(getRegister(rdBin))
+            output.push(getRegister(rsBin))
+        }
+        else{
+            print("Error, incorrect binary")
+
+        }
+    }
+    else if (func3 == "0011"){
+        print("no fields, syscall and break")
+
+    }
+
+    else if (func3 == "0100"){// rd if even decimal,  rs if odd decimal")
+        let oddOrEven = b2d(funcBin.slice(4,6))
+        if (oddOrEven % 2 === 0) { // print("00 or 10")
+            output.append(getRegister(rdBin))
+        }
+        else  { // print("01 or 11")
+            output.append(getRegister(rsBin))
+        }
+
+
+    } 
+
+    else if (func3 === "0110") { // rs, rt
+        output.push(getRegister(rsBin))
+        output.push(getRegister(rtBin))
+    }
+    else if ((func3 == "1000" || func3 == "1001") || func3 == "1010") { // rd, rs, rt
+        output.push(getRegister(rdBin))
+        output.push(getRegister(rsBin))
+        output.push(getRegister(rtBin))
+    }
+    else{
+        output.push("Error: Invalid Function Bits")
+
+    }
+
+    return output
+}
+    
+console.log(parseRType(manyH2B("01094020")))
