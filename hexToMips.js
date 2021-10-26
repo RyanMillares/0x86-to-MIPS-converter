@@ -184,10 +184,10 @@ function parseRType(binValue){
     else if (func3 == "0100"){// rd if even decimal,  rs if odd decimal")
         let oddOrEven = b2d(funcBin.slice(4,6))
         if (oddOrEven % 2 === 0) { // print("00 or 10")
-            output.append(getRegister(rdBin))
+            output.push(getRegister(rdBin))
         }
         else  { // print("01 or 11")
-            output.append(getRegister(rsBin))
+            output.push(getRegister(rsBin))
         }
 
 
@@ -323,5 +323,40 @@ function parseJType(binValue){
     output.push(b2h(labelBin))
     return output
 }
+// converts hex instruction to binary and parses based on instruction type
+function parseInput(hex) {
+    let instrType = getType(hex.slice(0,2))
+    let convBinary = ""
 
-console.log(parseIType(manyH2B("12345678")))
+    convBinary = manyH2B(hex)
+    console.log(convBinary)
+    let output = []
+    // split binary based on type 
+    switch(parseInt(instrType, 10)){
+        case 0:
+            output = parseRType(convBinary)
+            break;
+        case 1:
+            output = parseJType(convBinary)
+            break;
+        default:
+            output = parseRType(convBinary)
+            break;
+    }
+ 
+    let mips = ""
+    for(let i = 0; i < output.length; i++) {
+        if (i === 0 || i == (output.length) - 1) { // first or last object
+            mips += output[i] + " "
+        }
+        else { // objects in middle
+            mips += output[i] + ", "
+        }
+
+    }
+    return mips
+}
+let thing = manyH2B("12345678")
+console.log(thing)
+console.log(parseInput("12345678"))
+
