@@ -26,10 +26,11 @@ function h2b(hexVal){
 
 function manyH2B(hexVal) {
     let letters = hexVal.length 
-    var output = ""
+    let output = ""
     for(let i = 0; i < letters; i++){
         let convert = h2b(hexVal.slice(i, i+1))
-        output.concat(convert)
+        output += convert
+
     }
     return output
 }
@@ -52,7 +53,7 @@ function b2d(binVal){
     var value = 0
     for(let i = 0; i < numBits; i++){
 
-        value += int(binVal[numBits - i - 1]) * Math.pow(2,i)
+        value += parseInt(binVal[numBits - i - 1], 10) * Math.pow(2,i)
 
     }
 
@@ -210,3 +211,5 @@ function parseRType(binValue){
 }
     
 console.log(parseRType(manyH2B("01094020")))
+console.log(manyH2B("01094020"))
+console.log(h2b("A"))
