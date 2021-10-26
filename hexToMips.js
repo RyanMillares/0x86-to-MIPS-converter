@@ -209,7 +209,92 @@ function parseRType(binValue){
 
     return output
 }
-    
+
+// parses fields for i-type instructions    
+def parseIType(binValue):
+    output = []
+    opcode = binValue[0:6]
+    rsBin = binValue[6:11]
+    rtBin = binValue[11:16]
+    immBin = binValue[16:32]
+    typeId = str(opcode[0:2])
+    funcBin = opcode[2:6]
+    if typeId == "00":
+        num = b2d(opcode)
+        if num == 1:
+            if b2d(rtBin) <= 1:
+                opname = iType00[b2d(rtBin)]
+
+            else:
+                opname = "Error, BLTZ/BGEZ require rt of 000000 or 000001"
+
+        else:
+            if b2d(opcode) > 5:
+                if str(opcode[0:3]) == "000":
+                    if rtBin == "000000":
+                        opname = iType00[b2d(funcBin)]
+
+                    else: 
+                        opname = "Error, BLEZ/BGTZ require rt of 000000"
+
+                else:
+                    opname = iType00[b2d(funcBin)]
+
+            elif b2d(opcode) > 3:
+                opname = iType00[b2d(funcBin)]
+
+            else:
+                opname = "Error: Invalid i-type opcode"
+
+    elif typeId == "10":
+        opname = iType10[b2d(funcBin)]
+
+    elif typeId == "11":
+        opname = iType11[b2d(funcBin)]
+
+    else: 
+        opname = "Error Invalid Binary Opcode"
+
+    output.append(opname)
+    func3 = opcode[2:6]
+    firstBit = str(opcode[0:1])
+    funcDec = b2d(func3)
+    if firstBit == "0":
+        if funcDec > 5 or funcDec < 2: # rs, label
+            if str(opcode[2:3]) == "0":
+                output.append(getRegister(rsBin))
+                output.append(b2h(immBin))
+            else: #rt, rs, label
+                output.append(getRegister(rtBin))
+                output.append(getRegister(rsBin))
+                output.append(b2h(immBin))
+
+        else: # rs, rt, label
+            output.append(getRegister(rsBin))
+            output.append(getRegister(rtBin))
+            output.append(b2h(immBin))
+
+    elif firstBit == "1":
+        output.append(getRegister(rtBin))
+        label = b2h(immBin) + "(" + getRegister(rsBin) + ")"
+        output.append(label)
+
+    else:
+        # print("bruh")
+        output.append("bruh")
+
+    return output
+
+
+function parseJType(binValue){
+    let output = []
+    let opcode = binValue.slice(0,6)
+    let labelBin = binValue.slice(6,32)
+    let opname = jType[parseInt(opcode.slice(5,6), 10)]
+    output.push(opname)
+    labelBin = "00" + labelBin
+    output.push(b2h(labelBin))
+    return output
+}
+
 console.log(parseRType(manyH2B("01094020")))
-console.log(manyH2B("01094020"))
-console.log(h2b("A"))
