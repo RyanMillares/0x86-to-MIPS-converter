@@ -340,7 +340,7 @@ function parseInput(hex) {
             output = parseJType(convBinary)
             break;
         default:
-            output = parseRType(convBinary)
+            output = parseIType(convBinary)
             break;
     }
  
