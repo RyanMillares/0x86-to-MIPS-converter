@@ -356,7 +356,13 @@ function parseInput(hex) {
     }
     return mips
 }
-let thing = manyH2B("12345678")
-console.log(thing)
-console.log(parseInput("12345678"))
+let tester = []
+var startTime = performance.now()
+
+tester = parseInput("12345678")
+    
+var endTime = performance.now()
+
+console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
+
 
