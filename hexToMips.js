@@ -356,13 +356,16 @@ function parseInput(hex) {
     }
     return mips
 }
-let tester = []
-var startTime = performance.now()
 
-tester = parseInput("12345678")
+function checks() {
+    let tester = []
+    var startTime = performance.now()
     
-var endTime = performance.now()
-
-console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
+    tester = parseInput("12345678")
+        
+    var endTime = performance.now()
+    
+    console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
+}
 
 
