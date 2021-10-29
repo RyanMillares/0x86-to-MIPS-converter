@@ -206,8 +206,13 @@ function parseRType(binValue){
         output.push("Error: Invalid Function Bits")
 
     }
+    if (opname === "") {
+        return ["Invalid R-Type Function Bits"]
+    }
+    else {
+        return output
+    }
 
-    return output
 }
 
 // parses fields for i-type instructions    
@@ -308,8 +313,13 @@ function parseIType(binValue){
         output.push("bruh")
     }
 
-
-    return output
+    if (opname === "") {
+        return ["Invalid I-Type Opcode Bits"]
+    }
+    else {
+        return output
+    }
+    
 
 
 }
@@ -325,6 +335,7 @@ function parseJType(binValue){
     return output
 }
 // converts hex instruction to binary and parses based on instruction type
+// input: 8-digit hex value without "0x"; output: instruction as string
 function parseInput(hex) {
     let instrType = getType(hex.slice(0,2))
     let convBinary = ""
@@ -347,7 +358,11 @@ function parseInput(hex) {
  
     let mips = ""
     for(let i = 0; i < output.length; i++) {
-        if (i === 0 || i == (output.length) - 1) { // first or last object
+
+        if (output.length === 1) {
+            mips = output[0]
+        }
+        else if (i === 0 || i == (output.length) - 1) { // first or last object
             mips += output[i] + " "
         }
         else { // objects in middle
@@ -357,6 +372,22 @@ function parseInput(hex) {
     }
     return mips
 }
+
+function convertOne(hex) {
+    try {
+        let conv = validInput(hex)
+    }
+    catch (e) {
+        //switch(err.message) {
+        //    case "TypeError": return "Input must be a string"
+        //    case "ValueError": return "Input must "    
+        //}
+        return "Invalid Hex Value"
+    }
+    return parseInput(conv)
+}
+
+
 
 function checks() {
     let tester = []
@@ -371,9 +402,23 @@ function checks() {
 }
 function outputs() {
     var myInputs = []
+    var myOutputs = ""
     let lines = document.getElementById("input").value
     myInputs = lines.split(/\r?\n/)
-    console.log(myInputs.length)
+    for(let i = 0; i < myInputs.length; i++) {
+        let convertedInstr = convertOne(myInputs[i])
+        if (i < myInputs.length - 1) {
+            myOutputs += convertedInstr + "\n"
+        }
+        else {
+            myOutputs += convertedInstr
+        }
+    }
+    document.getElementById("output").value = myOutputs
+
+
+
+    //console.log(myInputs.length)
 }
 document.getElementById ("swap").addEventListener ("click", outputs, false);
 

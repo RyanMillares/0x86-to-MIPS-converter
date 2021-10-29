@@ -249,6 +249,7 @@ def parseJType(binValue):
 def parseInput(hex):
     instrType = getType(hex[0:2])
     convBinary = ""
+    #print(instrType)
     for i in range(len(hex)):
         convBinary += h2b(hex[i:(i+1)])
 
