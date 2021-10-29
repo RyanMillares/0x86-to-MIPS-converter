@@ -219,7 +219,7 @@ function parseIType(binValue){
     let immBin = binValue.slice(16,32)
     let typeId = String(opcode.slice(0,2))
     let funcBin = opcode.slice(2,6)
-    let opname = ""
+    var opname = ""
     if (typeId === "00"){
         let num = b2d(opcode)
         if (num === 1) {
@@ -247,7 +247,7 @@ function parseIType(binValue){
                 }   
             }
             else if (b2d(opcode) > 3){
-                let opname = iType00[b2d(funcBin)]
+                opname = iType00[b2d(funcBin)]
             }
                 
             else {
