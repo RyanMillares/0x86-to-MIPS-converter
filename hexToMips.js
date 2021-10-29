@@ -62,13 +62,17 @@ function b2d(binVal){
 // validates if input is in correct 32-bit assembly instruction format
 function validInput(input){
     if (input.length === 10 && input.slice(0,2) === "0x"){
-        const hexOut = input.slice(2,10)
+        let hexOut = input.slice(2,10)
         for (let i = 0; i < hexOut.length; i++){
 
-            const currChar = hexOut.slice(i, (i+1))
-            if (currChar.toUpperCase().indexOf(validChars) <= -1) {
+            let currChar = hexOut.slice(i, (i+1))
+            if (!validChars.includes(currChar.toUpperCase)) {
+                console.log(currChar + " is not valid")
                 throw 'NameError'
             }
+            //if (currChar.toUpperCase().indexOf(validChars) <= -1) {
+            //    throw 'NameError'
+            //}
 
         }
 
