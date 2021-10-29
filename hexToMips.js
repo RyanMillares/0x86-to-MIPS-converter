@@ -370,8 +370,10 @@ function checks() {
     document.getElementById("output").value = parseInput(userInput)
 }
 function outputs() {
+    var myInputs = []
     let lines = document.getElementById("input").value
-    console.log(lines)
+    myInputs = lines.split(/\r?\n/)
+    console.log(myInputs.length)
 }
 document.getElementById ("swap").addEventListener ("click", outputs, false);
 
