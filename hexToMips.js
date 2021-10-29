@@ -434,12 +434,9 @@ export function outputs() {
     //console.log(myInputs.length)
 }
 
-function loadDefault() {
-    document.getElementById("input").value = inputs;
-    output();
-}
+
 let tester = "0"
 console.log(validChars.includes(tester.toUpperCase) ? tester +" is good" : tester + " is bad")
-document.getElementById("default").addEventListener("click", loadDefault, false);
+//document.getElementById("default").addEventListener("click", loadDefault, false);
 document.getElementById ("input").addEventListener ("input", outputs, false);
 
