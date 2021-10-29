@@ -3,6 +3,7 @@
     <head>
         <link rel = "stylesheet" href = "styles.css">
         <script type = "module" src = "hexToMips.js"></script>
+        <script type = "module" src = "UIFunctions.js"></script>
         
         <title>Hex To Mips Converter</title>
     </head>
@@ -13,10 +14,19 @@
         <main>
             
             <div class = "interface">
+                <div class = "pairedText">
+                    <h3>32-Bit Hex Input</h3>
+                    <p>Example: "0x20080000"</p>
+                    <textarea id = "input" name = "input" placeholder = "Hex Instructions" rows = 20></textarea>
 
-                <textarea id = "input" name = "input" placeholder = "Hex Instructions" rows = 20></textarea>
-                <input type = "button" id= "swap" value = "Swap">
-                <textarea id = "output" name = "ouput" placeholder = "Hex Instructions" rows = 20 cols = 40 readonly></textarea>
+                </div>
+                <input type = "button" id= "swap" class = "swapButton" value = "Swap">
+                <div class = "pairedText">
+                    <h3>MIPS Output</h3>
+                    <p>Example: "addi $t0, $0, 0x0001</p>
+                    <textarea id = "output" name = "ouput" placeholder = "Converted MIPS lines" rows = 20 cols = 40 readonly></textarea>
+                </div>
+                
             </div>
 
 

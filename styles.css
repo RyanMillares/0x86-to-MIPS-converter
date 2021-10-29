@@ -4,5 +4,15 @@ textarea {
 .interface {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    align-items: top;
+}
+.pairedText {
+    display: flex;
+    flex-direction: column;
+}
+.swapButton {
+    font-size: 25px;
+    max-height: 40px;
+
 }
