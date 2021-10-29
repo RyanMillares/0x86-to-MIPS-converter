@@ -367,6 +367,7 @@ function checks() {
     var endTime = performance.now()
     
     console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
+    document.getElementById("output").value = tester
 }
 document.getElementById ("swap").addEventListener ("click", checks, false);
 
