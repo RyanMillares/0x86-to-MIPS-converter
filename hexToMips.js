@@ -247,7 +247,7 @@ function parseIType(binValue){
                 }   
             }
             else if (b2d(opcode) > 3){
-                opname = iType00[b2d(funcBin)]
+                let opname = iType00[b2d(funcBin)]
             }
                 
             else {
