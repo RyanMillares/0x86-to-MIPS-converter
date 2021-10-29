@@ -17,6 +17,8 @@ const iType11 = ["lwc1","swc1"] // length 2
 // J-type instructions
 const jType = ["j", "jal"]
 
+var flag = true
+
 // Converts hex character to 4-bit binary
 function h2b(hexVal){
     //assuming input is one character
@@ -400,20 +402,29 @@ function checks() {
     document.getElementById("output").value = parseInput(userInput)
 }
 function outputs() {
-    var myInputs = []
-    var myOutputs = ""
-    let lines = document.getElementById("input").value
-    myInputs = lines.split(/\r?\n/)
-    for(let i = 0; i < myInputs.length; i++) {
-        let convertedInstr = convertOne(myInputs[i])
-        if (i < myInputs.length - 1) {
-            myOutputs += convertedInstr + "\n"
+    if(flag === true) {
+        flag = false
+        var myInputs = []
+        var myOutputs = ""
+        let lines = document.getElementById("input").value
+        myInputs = lines.split(/\r?\n/)
+        for(let i = 0; i < myInputs.length; i++) {
+            let convertedInstr = convertOne(myInputs[i])
+            if (i < myInputs.length - 1) {
+                myOutputs += convertedInstr + "\n"
+            }
+            else {
+                myOutputs += convertedInstr
+            }
         }
-        else {
-            myOutputs += convertedInstr
-        }
+        document.getElementById("output").value = myOutputs
+        flag = true
     }
-    document.getElementById("output").value = myOutputs
+    else {
+        console.log("Waiting...")
+    }
+
+
 
 
 
