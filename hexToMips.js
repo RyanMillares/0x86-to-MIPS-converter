@@ -367,5 +367,5 @@ function checks() {
     
     console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
 }
-
+document.getElementById ("swap").addEventListener ("click", checks, false);
 
