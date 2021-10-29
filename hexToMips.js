@@ -371,8 +371,9 @@ function parseInput(hex) {
 }
 
 function convertOne(hex) {
+    let conv = ""
     try {
-        let conv = validInput(hex)
+        conv = validInput(hex)
     }
     catch (e) {
         //switch(err.message) {
