@@ -401,7 +401,7 @@ function checks() {
 
     document.getElementById("output").value = parseInput(userInput)
 }
-function outputs() {
+export function outputs() {
     if(flag === true) {
         flag = false
         var myInputs = []
