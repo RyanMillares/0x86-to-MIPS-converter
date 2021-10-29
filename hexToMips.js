@@ -361,13 +361,13 @@ function parseInput(hex) {
 function checks() {
     let tester = []
     var startTime = performance.now()
-    
     tester = parseInput("12345678")
-        
     var endTime = performance.now()
-    
     console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
-    document.getElementById("output").value = tester
+
+    let userInput = document.getElementById("input").value
+
+    document.getElementById("output").value = parseInput(userInput)
 }
 document.getElementById ("swap").addEventListener ("click", checks, false);
 
