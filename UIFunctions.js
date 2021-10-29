@@ -1,4 +1,4 @@
-import {output} from 'hexToMips.js'
+//import {output} from 'hexToMips.js'
 
 //function checks() {
 //    let userInput =  document.getElementById("input").value;
@@ -12,7 +12,7 @@ function swap() {
 }
 function loadDefault() {
     document.getElementById("input").value = inputs;
-    output();
+    //output();
 }
 document.getElementById("default").addEventListener("click", loadDefault, false);
 document.getElementById("swap").addEventListener("click", swap, false);
