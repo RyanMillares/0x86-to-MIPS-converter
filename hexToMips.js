@@ -238,7 +238,7 @@ function parseIType(binValue){
 
         else {
             if (b2d(opcode) > 5) {
-                if (str(opcode.slice(0,3)) === "000") {
+                if (String(opcode.slice(0,3)) === "000") {
                     if (rtBin === "000000"){
                         opname = iType00[b2d(funcBin)]
                     }
