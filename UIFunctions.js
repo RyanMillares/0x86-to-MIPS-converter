@@ -1,4 +1,4 @@
-import {output} from 'hexToMips.js'
+import {output} from './hexToMips.js'
 
 //function checks() {
 //    let userInput =  document.getElementById("input").value;
