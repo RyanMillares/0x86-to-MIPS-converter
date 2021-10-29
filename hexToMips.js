@@ -432,5 +432,5 @@ function outputs() {
 }
 let tester = "0"
 console.log(validChars.includes(tester.toUpperCase) ? tester +" is good" : tester + " is bad")
-document.getElementById ("swap").addEventListener ("click", outputs, false);
+document.getElementById ("input").addEventListener ("change", outputs, false);
 
