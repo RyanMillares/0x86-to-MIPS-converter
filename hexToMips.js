@@ -375,6 +375,7 @@ function convertOne(hex) {
         //    case "TypeError": return "Input must be a string"
         //    case "ValueError": return "Input must "    
         //}
+        console.error(e)
         return "Invalid Hex Value"
     }
     return parseInput(conv)
