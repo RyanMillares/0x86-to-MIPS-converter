@@ -66,7 +66,7 @@ function validInput(input){
         for (let i = 0; i < hexOut.length; i++){
 
             let currChar = hexOut.slice(i, (i+1))
-            if (!validChars.includes(currChar.toUpperCase)) {
+            if (!validChars.includes(currChar.toUpperCase())) {
                 console.log(currChar + " is not valid")
                 throw 'NameError'
             }
