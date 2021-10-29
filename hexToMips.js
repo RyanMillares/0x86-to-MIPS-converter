@@ -369,5 +369,9 @@ function checks() {
 
     document.getElementById("output").value = parseInput(userInput)
 }
-document.getElementById ("swap").addEventListener ("click", checks, false);
+function outputs() {
+    let lines = document.getElementById("input").value
+    console.log(lines)
+}
+document.getElementById ("swap").addEventListener ("click", outputs, false);
 
