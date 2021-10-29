@@ -13,6 +13,9 @@
         </header>
         <main>
             
+            <h1>
+                <center>Real-time Hex-to-MIPS Converter</center>
+            </h1>
             <div class = "interface">
                 <div class = "pairedText">
                     <h3>32-Bit Hex Input</h3>
@@ -20,10 +23,15 @@
                     <textarea id = "input" name = "input" placeholder = "Hex Instructions" rows = 20></textarea>
 
                 </div>
-                <input type = "button" id= "swap" class = "swapButton" value = "Swap">
+                <div class = "pairedText">
+                    <input type = "button" id = "default" class = "largerButton" value = "Load Example Instructions">
+                    <br>
+                    <input type = "button" id= "swap" class = "largeButton" value = "Swap">
+
+                </div>
                 <div class = "pairedText">
                     <h3>MIPS Output</h3>
-                    <p>Example: "addi $t0, $0, 0x0001</p>
+                    <p>Example: "addi $t0, $0, 0x0001"</p>
                     <textarea id = "output" name = "ouput" placeholder = "Converted MIPS lines" rows = 20 cols = 40 readonly></textarea>
                 </div>
                 

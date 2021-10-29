@@ -11,8 +11,14 @@ textarea {
     display: flex;
     flex-direction: column;
 }
-.swapButton {
+.largeButton {
     font-size: 25px;
     max-height: 40px;
 
+
+}
+.largerButton {
+    font-size: 25px;
+    max-height: 40px;
+    max-width: 400px;
 }
