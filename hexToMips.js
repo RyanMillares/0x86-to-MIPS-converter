@@ -219,6 +219,7 @@ function parseIType(binValue){
     let immBin = binValue.slice(16,32)
     let typeId = String(opcode.slice(0,2))
     let funcBin = opcode.slice(2,6)
+    let opname = ""
     if (typeId === "00"){
         let num = b2d(opcode)
         if (num === 1) {
