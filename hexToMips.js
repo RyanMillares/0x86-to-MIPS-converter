@@ -19,6 +19,9 @@ const jType = ["j", "jal"]
 
 var flag = true
 
+const inputs = "0x20080000\n0x20090001\n0x0089502A\n0x15400003\n0x01094020\n0x21290002\n0x08100002\n0x01001020\n0x03E00008";
+
+
 // Converts hex character to 4-bit binary
 function h2b(hexVal){
     //assuming input is one character
@@ -430,7 +433,13 @@ export function outputs() {
 
     //console.log(myInputs.length)
 }
+
+function loadDefault() {
+    document.getElementById("input").value = inputs;
+    output();
+}
 let tester = "0"
 console.log(validChars.includes(tester.toUpperCase) ? tester +" is good" : tester + " is bad")
+document.getElementById("default").addEventListener("click", loadDefault, false);
 document.getElementById ("input").addEventListener ("input", outputs, false);
 
