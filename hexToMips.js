@@ -151,7 +151,7 @@ function parseRType(binValue){
     output.push(opname)
 
     // Fetch order of fields and error handle
-    let func3 = funcBin.slice(0,4)
+    var func3 = funcBin.slice(0,4)
 
     if (func3 === "0000") { // rd, rt, sa
         output.push(getRegister(rdBin))
