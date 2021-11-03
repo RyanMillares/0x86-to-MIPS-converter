@@ -427,10 +427,6 @@ export function outputs() {
         console.log("Waiting...")
     }
 
-
-
-
-
     //console.log(myInputs.length)
 }
 
